@@ -1,0 +1,3290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asthma Care Guide</title>
+    <style>
+        :root {
+            --teal: #2dd4bf;
+            --mint: #99f6e4;
+            --sky: #e0f2fe;
+            --gold: #fde047;
+        }
+        :root {
+    --rotation: 0deg;
+    --active-step: 0;
+}
+
+.priority-box::before {
+    transform: rotate(var(--rotation));
+}
+
+        .header-container {
+            position: relative;
+            height: 80vh;
+            min-height: 600px;
+            background: linear-gradient(135deg, var(--teal) 0%, var(--mint) 50%, var(--sky) 100%);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+        }
+
+        .title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 4rem;
+            background: linear-gradient(to right, var(--teal), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: darkgreen;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 1.5rem;
+            color: green;
+            position: relative;
+            display: inline-block;
+        }
+
+        .subtitle::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .lung-animation {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            opacity: 0.1;
+            mask-image: url('data:image/svg+xml,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M20,50 Q40,30 50,50 Q60,70 80,50" fill="none" stroke="white" stroke-width="2"/></svg>');
+            animation: breathe 8s ease-in-out infinite;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Advanced particle system */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            from { transform: translateY(100%) rotate(0deg); }
+            to { transform: translateY(-100%) rotate(360deg); }
+        }
+
+        /* Dynamic grid overlay */
+        .grid-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
+        }
+
+        /* Table of Contents Styles */
+    .toc-container {
+        position: relative;
+        max-width: 1200px;
+        margin: -100px auto 0;
+        padding: 4rem 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        transform: translateY(-50px);
+        z-index: 10;
+    }
+
+    .toc-title {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(to right, var(--teal), var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .toc-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        counter-reset: toc-counter;
+    }
+
+    .toc-item {
+        position: relative;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        overflow: hidden;
+    }
+
+    .toc-item::before {
+        counter-increment: toc-counter;
+        content: counter(toc-counter);
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 50px;
+        height: 50px;
+        background: var(--gold);
+        color: white;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .toc-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(45, 212, 191, 0.2);
+    }
+
+    .toc-item:hover::before {
+        transform: scale(1.1) rotate(15deg);
+    }
+
+    .toc-item h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.3rem;
+        color: #1e293b;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .toc-item p {
+        font-family: 'Inter', sans-serif;
+        color: #64748b;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    /* Animated border effect */
+    .toc-item::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 15px;
+        padding: 2px;
+        background: linear-gradient(45deg, var(--teal), var(--gold));
+        -webkit-mask: 
+            linear-gradient(#fff 0 0) content-box, 
+            linear-gradient(#fff 0 0);
+        mask: 
+            linear-gradient(#fff 0 0) content-box, 
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .toc-item:hover::after {
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+        .toc-container {
+            margin: -50px auto 0;
+            padding: 2rem 1rem;
+        }
+        
+        .toc-title {
+            font-size: 2rem;
+        }
+        
+        .toc-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Controlling Asthma Styles */
+.content-section {
+    position: relative;
+    padding: 8rem 2rem;
+    background: #ffffff;
+    z-index: 5;
+}
+
+.section-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-header {
+    margin-bottom: 4rem;
+    position: relative;
+}
+
+.section-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: linear-gradient(to right, var(--teal), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.title-number {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    background: var(--gold);
+    color: white;
+    border-radius: 50%;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(253, 224, 71, 0.3);
+}
+
+.title-line {
+    width: 200px;
+    height: 4px;
+    background: linear-gradient(to right, var(--teal), transparent);
+    margin-top: 1rem;
+    opacity: 0.5;
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.text-content {
+    position: relative;
+}
+
+.lead-text {
+    font-size: 1.4rem;
+    color: #1e293b;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+    padding-left: 2rem;
+    border-left: 4px solid var(--teal);
+}
+
+.key-points {
+    display: grid;
+    gap: 2rem;
+}
+
+.point-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(45, 212, 191, 0.1);
+}
+
+.point-card:hover {
+    transform: translateY(-5px);
+}
+
+.point-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.point-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.4rem;
+    color: var(--teal);
+    margin-bottom: 1rem;
+}
+
+.point-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.point-list li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 0.8rem;
+    color: #64748b;
+}
+
+.point-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+}
+
+.priority-box {
+    background: rgba(45, 212, 191, 0.05);
+    border: 2px solid rgba(45, 212, 191, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.priority-box::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(var(--gold) 0%, transparent 80%);
+    animation: rotate 8s linear infinite;
+}
+
+.priority-title {
+    font-family: 'Inter', sans-serif;
+    color: var(--teal);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.priority-steps {
+    counter-reset: step-counter;
+    list-style: none;
+    padding-left: 0;
+}
+
+.priority-steps li {
+    position: relative;
+    padding: 1rem 0 1rem 3rem;
+    margin-bottom: 1rem;
+    color: #1e293b;
+    border-bottom: 1px solid rgba(45, 212, 191, 0.1);
+}
+
+.priority-steps li::before {
+    counter-increment: step-counter;
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    background: var(--gold);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: transform 0.3s ease;
+}
+
+.priority-steps li:hover::before {
+    transform: translateY(-50%) scale(1.1) rotate(15deg);
+}
+
+.visual-content {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+}
+
+.infographic-container {
+    position: relative;
+    border-radius: 30px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.pulsing-circle {
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(253, 224, 71, 0.1) 0%, transparent 60%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.responsive-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 0.4; }
+}
+
+@media (max-width: 1200px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .visual-content {
+        position: relative;
+        top: auto;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+    }
+    
+    .title-number {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Symptoms Section Styles */
+.symptoms-section {
+    position: relative;
+    padding: 8rem 2rem;
+    background: #f8fafc;
+}
+
+.symptoms-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.symptoms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 3rem;
+    margin-top: 4rem;
+}
+
+.symptom-card {
+    background: white;
+    border-radius: 25px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.symptom-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.symptom-icon {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.common-symptoms .symptom-icon {
+    background: rgba(45, 212, 191, 0.1);
+    color: var(--teal);
+}
+
+.emergency-symptoms .symptom-icon {
+    background: rgba(255, 0, 0, 0.1);
+    color: #dc2626;
+}
+
+.card-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.severity-indicator {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+.severity-indicator.mild {
+    background: var(--teal);
+}
+
+.severity-indicator.critical {
+    background: #dc2626;
+    animation: pulse 1.5s infinite;
+}
+
+.symptom-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.symptom-list li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.symptom-list li:hover {
+    background: rgba(248, 250, 252, 0.9);
+    transform: translateX(10px);
+}
+
+.symptom-list li[data-severity="critical"] {
+    background: rgba(220, 38, 38, 0.03);
+    border: 1px solid rgba(220, 38, 38, 0.1);
+}
+
+.symptom-info h4 {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    color: #1e293b;
+}
+
+.symptom-info p {
+    margin: 0.3rem 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.alert-badge {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 25px;
+    height: 25px;
+    background: #dc2626;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.emergency-footer {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(220, 38, 38, 0.05);
+    border-radius: 15px;
+    text-align: center;
+}
+
+.pulsing-alert {
+    color: #dc2626;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    animation: pulse-text 2s infinite;
+}
+
+.emergency-btn {
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+    margin-left: 1rem;
+}
+
+.emergency-btn:hover {
+    background: #b91c1c;
+    transform: scale(1.05);
+}
+
+@keyframes pulse-text {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@media (max-width: 768px) {
+    .symptoms-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .symptom-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .emergency-btn {
+        margin-top: 1rem;
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* Triggers Section Styles */
+.triggers-section {
+    background: #f8fafc;
+    padding: 8rem 2rem;
+    position: relative;
+}
+
+.triggers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.trigger-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.trigger-card:hover {
+    transform: translateY(-5px);
+}
+
+.trigger-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.trigger-icon {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+[data-trigger-type="smoke"] .trigger-icon {
+    background: rgba(255, 0, 0, 0.1);
+    color: #dc2626;
+}
+
+[data-trigger-type="dander"] .trigger-icon {
+    background: rgba(253, 224, 71, 0.1);
+    color: var(--gold);
+}
+
+[data-trigger-type="mites"] .trigger-icon {
+    background: rgba(45, 212, 191, 0.1);
+    color: var(--teal);
+}
+
+.risk-level {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    margin-left: auto;
+}
+
+.risk-level.high {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.risk-level.medium {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.trigger-measures li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: #f8fafc;
+    border-radius: 10px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.trigger-measures li:hover {
+    background: white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.measure-icon {
+    font-size: 1.2rem;
+    min-width: 30px;
+}
+
+.quitline-btn {
+    margin-left: auto;
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quitline-btn:hover {
+    background: #b91c1c;
+}
+
+.progress-container {
+    height: 5px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    margin-top: 1.5rem;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.smoke-progress { background: #dc2626; }
+.dander-progress { background: var(--gold); }
+.mites-progress { background: var(--teal); }
+
+.temp-indicator {
+    margin-left: auto;
+    animation: pulse 1.5s infinite;
+}
+
+.humidity-gauge {
+    width: 50px;
+    height: 5px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    margin-left: auto;
+    position: relative;
+}
+
+.humidity-gauge::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: var(--teal);
+    border-radius: 3px;
+}
+
+.trigger-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.trigger-tag {
+    background: rgba(45, 212, 191, 0.1);
+    color: var(--teal);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.prevention-tips p {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .triggers-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Ten Steps Section Styles */
+.steps-section {
+    background: linear-gradient(160deg, #f8fafc 0%, #f0fdfa 100%);
+    padding: 8rem 2rem;
+    position: relative;
+}
+
+.steps-progress {
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.progress-circle {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.progress-circle svg {
+    transform: rotate(-90deg);
+}
+
+.progress-background {
+    fill: none;
+    stroke: #e2e8f0;
+    stroke-width: 8;
+}
+
+.progress-indicator {
+    fill: none;
+    stroke: var(--teal);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 283;
+    transition: stroke-dashoffset 0.8s ease;
+}
+
+.progress-count {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--teal);
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.step-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.step-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(45, 212, 191, 0.1);
+}
+
+.step-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.step-number {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    color: var(--teal);
+    opacity: 0.6;
+}
+
+.step-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(45, 212, 191, 0.1);
+}
+
+.step-status {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--teal);
+    border-radius: 50%;
+    margin-left: auto;
+    transition: all 0.3s ease;
+}
+
+.step-card.completed .step-status {
+    background: var(--teal);
+    border-color: var(--teal);
+}
+
+.step-checklist {
+    margin-top: 1rem;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin: 0.3rem 0;
+}
+
+.air-quality-widget {
+    margin-top: 3rem;
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+.aqi-display {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 15px;
+    background: var(--teal);
+    color: white;
+}
+
+.aqi-value {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.aqi-label {
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .air-quality-widget {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Indoor Air Quality Styles */
+.air-quality-section {
+    background: linear-gradient(175deg, #f8fafc 0%, #f0fdfa 100%);
+    padding: 8rem 2rem;
+}
+
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.room-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(45, 212, 191, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(45, 212, 191, 0.1);
+}
+
+.room-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.room-icon {
+    font-size: 1.8rem;
+    background: rgba(45, 212, 191, 0.1);
+    padding: 0.8rem;
+    border-radius: 12px;
+    color: var(--teal);
+}
+
+.room-progress {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: conic-gradient(var(--teal) 0%, #e2e8f0 0%);
+    margin-left: auto;
+}
+
+.room-checklist li {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: #f8fafc;
+    border-radius: 12px;
+    position: relative;
+}
+
+.check-icon {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--teal);
+    border-radius: 6px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.task-info h4 {
+    margin: 0 0 0.3rem;
+    color: var(--teal);
+    font-size: 1rem;
+}
+
+.humidity-display {
+    width: 100%;
+    height: 5px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    position: relative;
+}
+
+.humidity-bar {
+    width: 50%;
+    height: 100%;
+    background: var(--teal);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.print-plan-btn {
+    background: var(--teal);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    margin-top: 3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.print-plan-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(45, 212, 191, 0.3);
+}
+
+@media (max-width: 768px) {
+    .room-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== Indoor Air Quality Styles ===== */
+.air-quality-section {
+  padding: 8rem 2rem;
+  background: linear-gradient(175deg, #f8fafc 0%, #f0fdfa 100%);
+  position: relative;
+}
+
+.section-intro {
+  font-size: 1.2rem;
+  color: #64748b;
+  max-width: 800px;
+  margin: 1.5rem auto 3rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.room-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(45, 212, 191, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.room-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(45, 212, 191, 0.1);
+}
+
+.room-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(45, 212, 191, 0.1);
+}
+
+.room-icon {
+  font-size: 2rem;
+  background: rgba(45, 212, 191, 0.1);
+  padding: 1rem;
+  border-radius: 15px;
+  color: var(--teal);
+}
+
+.room-progress {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: conic-gradient(var(--teal) 0%, #e2e8f0 0%);
+  margin-left: auto;
+  position: relative;
+}
+
+.room-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.room-checklist li {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: #f8fafc;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.check-icon {
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--teal);
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.check-icon.checked {
+  background: var(--teal);
+  border-color: var(--teal);
+}
+
+.check-icon.checked::after {
+  content: '✓';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+
+.task-info h4 {
+  margin: 0 0 0.5rem;
+  color: var(--teal);
+  font-size: 1.1rem;
+}
+
+.humidity-display {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  margin-top: 1rem;
+  position: relative;
+}
+
+.humidity-bar {
+  width: 50%;
+  height: 100%;
+  background: var(--teal);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.print-plan-btn {
+  background: var(--teal);
+  color: white;
+  border: none;
+  padding: 1.2rem 2.5rem;
+  border-radius: 50px;
+  margin: 3rem auto 0;
+  display: block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+}
+
+.toc-item {
+    /* Add these properties */
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    
+    /* Keep existing properties */
+    position: relative;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+ /* Video Section - Integrated with Existing Design */
+        .video-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(175deg, var(--sky) 0%, var(--mint) 100%);
+        }
+
+        .video-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(45, 212, 191, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(45, 212, 191, 0.1);
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(45, 212, 191, 0.15);
+        }
+
+        .video-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid rgba(45, 212, 191, 0.1);
+        }
+
+        .video-title {
+            margin: 0;
+            color: var(--teal);
+            font-family: 'Inter', sans-serif;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .video-title i {
+            color: var(--gold);
+            font-size: 1.6rem;
+        }
+
+        .video-player {
+            position: relative;
+            padding-top: 56.25%;
+            background: #000;
+        }
+
+        .video-player video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .thumbnail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .play-icon {
+            color: white;
+            font-size: 4rem;
+            opacity: 0.9;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover .play-icon {
+            transform: scale(1.1);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .video-section {
+                padding: 2rem 1rem;
+            }
+            
+            .video-title {
+                font-size: 1.2rem;
+                gap: 0.8rem;
+            }
+            
+            .play-icon {
+                font-size: 3rem;
+            }
+        }
+
+/* Remove the .toc-item a styles */
+
+.print-plan-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(45, 212, 191, 0.3);
+}
+
+@media (max-width: 768px) {
+  .room-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .room-card {
+    padding: 1.5rem;
+  }
+  
+  .room-header {
+    gap: 1rem;
+  }
+}
+
+/* Add smooth scroll behavior to whole page */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Visual feedback for target sections */
+section:target {
+    animation: highlight 1.5s ease;
+}
+
+@keyframes highlight {
+    from { background: rgba(45, 212, 191, 0.1); }
+    to { background: transparent; }
+}
+
+/* Add to existing styles */
+.toc-item {
+    all: initial; /* Reset default anchor styles */
+    display: block; /* Maintain block layout */
+    cursor: pointer;
+    /* Existing toc-item styles remain unchanged */
+}
+
+.toc-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Add scroll margin to all target sections */
+section[id] {
+    scroll-margin-top: 150px;
+}
+
+/* Footer Styles */
+/* Footer Styles */
+.site-footer {
+    background: linear-gradient(160deg, var(--teal) 0%, #0d9488 100%);
+    color: white;
+    padding: 4rem 2rem 2rem;
+    margin: 0;
+    width: 100%;
+    border-top: 3px solid var(--gold);
+    margin-top: 4rem;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.footer-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    padding-bottom: 3rem;
+}
+
+.footer-section {
+    padding: 1.5rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-section:last-child {
+    border-right: none;
+}
+
+.org-info {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.org-icon {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    color: var(--gold);
+}
+
+.org-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.3rem;
+    margin: 0 0 0.5rem;
+    line-height: 1.4;
+}
+
+.org-subtitle {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.contact-info {
+    font-style: normal;
+    margin-top: 1.5rem;
+}
+
+.contact-info a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 0.8rem 0;
+    transition: opacity 0.3s ease;
+}
+
+.contact-info a:hover {
+    opacity: 0.8;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.footer-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: transform 0.3s ease;
+}
+
+.footer-link:hover {
+    transform: translateX(8px);
+}
+
+.social-links {
+    display: flex;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.social-icon {
+    width: 32px;
+    height: 32px;
+    fill: white;
+    transition: fill 0.3s ease;
+}
+
+.social-icon:hover {
+    fill: var(--gold);
+}
+
+.legal-info {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 2rem;
+}
+
+.copyright {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin: 0 0 1rem;
+}
+
+.legal-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.legal-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.legal-links a:hover {
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .footer-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-section {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 2rem 0;
+    }
+
+    .footer-container {
+        padding: 0 1.5rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <div class="grid-overlay"></div>
+        <div class="lung-animation"></div>
+        <div class="particles" id="particles"></div>
+        <div class="header-content">
+            <h1 class="title">Creating a Healthy Environment<br>for Children with Asthma</h1>
+            <p class="subtitle">A Guide for Parents and Caregivers</p>
+        </div>
+    </div>
+
+    <!-- <section class="toc-container">
+    <h2 class="toc-title">Table of Contents</h2>
+    <div class="toc-grid">
+        <a href="#what-is-asthma" class="toc-item" onclick="smoothScroll(event)">
+            <h3>What is Asthma?</h3>
+            <p>Understanding the fundamentals of respiratory health</p>
+        </a>
+
+        <a href="#controlling-asthma" class="toc-item" onclick="smoothScroll(event)">
+            <h3>Controlling Asthma</h3>
+            <p>Effective management strategies and daily care</p>
+        </a>
+
+        <a href="#symptoms" class="toc-item" onclick="smoothScroll(event)">
+            <h3>Symptoms</h3>
+            <p>Recognizing early warning signs and indicators</p>
+        </a>
+
+        <a href="#triggers" class="toc-item" onclick="smoothScroll(event)">
+            <h3>Triggers</h3>
+            <p>Identifying and avoiding common asthma triggers</p>
+        </a>
+
+        <a href="#steps-home" class="toc-item" onclick="smoothScroll(event)">
+            <h3>Ten Steps for an Asthma-Friendly Home</h3>
+            <p>Creating a safe living environment</p>
+        </a>
+
+        <a href="#clean-air" class="toc-item" onclick="smoothScroll(event)">
+            <h3>Keeping Indoor Air Clean</h3>
+            <p>Advanced air purification techniques</p>
+        </a>
+
+        <a href="#pests" class="toc-item" onclick="smoothScroll(event)">
+            <h3>Cockroaches and Rodents</h3>
+            <p>Managing pests in sensitive environments</p>
+        </a>
+
+        <a href="#mold-pollen" class="toc-item" onclick="smoothScroll(event)">
+            <h3>Pollen, Outdoor Mold, and Indoor Mold</h3>
+            <p>Comprehensive allergen control strategies</p>
+        </a>
+    </div>
+</section> -->
+
+   
+
+
+     
+
+    <!-- Controlling Asthma Section -->
+<section class="content-section" id="controlling-asthma">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title"><span class="title-number">02</span>Controlling Asthma</h2>
+            <div class="title-line"></div>
+        </div>
+
+        <div class="grid-layout">
+            <div class="text-content">
+                <p class="lead-text">Asthma requires comprehensive long-term management in collaboration with healthcare providers.</p>
+                
+                <div class="key-points">
+                    <div class="point-card">
+                        <div class="point-icon">🩺</div>
+                        <h3 class="point-title">Essential Management Strategies</h3>
+                        <ul class="point-list">
+                            <li>Develop a personalized asthma action plan</li>
+                            <li>Maintain easy access to rescue medications</li>
+                            <li>Implement trigger avoidance protocols</li>
+                            <li>Establish symptom monitoring routines</li>
+                        </ul>
+                    </div>
+
+                    <!-- <div class="priority-box">
+                        <h3 class="priority-title">Five Pillars of Asthma Control</h3>
+                        <ol class="priority-steps">
+                            <li data-step="1">
+                                <span class="step-number"></span>
+                                Regular specialist consultations
+                            </li>
+                            <li data-step="2">
+                                <span class="step-number"></span>
+                                Adherence to management protocols
+                            </li>
+                            <li data-step="3">
+                                <span class="step-number"></span>
+                                Medication regimen maintenance
+                            </li>
+                            <li data-step="4">
+                                <span class="step-number"></span>
+                                Trigger identification system
+                            </li>
+                            <li data-step="5">
+                                <span class="step-number"></span>
+                                Emergency response preparedness
+                            </li>
+                        </ol>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="visual-content">
+                <div class="priority-box">
+                        <h3 class="priority-title">Five Pillars of Asthma Control</h3>
+                        <ol class="priority-steps">
+                            <li data-step="1">
+                                <span class="step-number"></span>
+                                Regular specialist consultations
+                            </li>
+                            <li data-step="2">
+                                <span class="step-number"></span>
+                                Adherence to management protocols
+                            </li>
+                            <li data-step="3">
+                                <span class="step-number"></span>
+                                Medication regimen maintenance
+                            </li>
+                            <li data-step="4">
+                                <span class="step-number"></span>
+                                Trigger identification system
+                            </li>
+                            <li data-step="5">
+                                <span class="step-number"></span>
+                                Emergency response preparedness
+                            </li>
+                        </ol>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Symptoms Section -->
+<section class="symptoms-section" id="symptoms">
+    <div class="symptoms-container">
+        <div class="section-header">
+            <h2 class="section-title"><span class="title-number">03</span>Symptoms Recognition</h2>
+            <div class="title-line"></div>
+        </div>
+
+        <div class="symptoms-grid">
+            <!-- Common Symptoms Card -->
+            <div class="symptom-card common-symptoms">
+                <div class="card-header">
+                    <div class="symptom-icon">🩺</div>
+                    <h3 class="card-title">Common Asthma Signs</h3>
+                    <div class="severity-indicator mild"></div>
+                </div>
+                <ul class="symptom-list">
+                    <li data-severity="mild">
+                        <span class="symptom-icon">🎵</span>
+                        <div class="symptom-info">
+                            <h4>Wheezing</h4>
+                            <p>Whistling or raspy breathing sounds</p>
+                        </div>
+                    </li>
+                    <li data-severity="mild">
+                        <span class="symptom-icon">🌙</span>
+                        <div class="symptom-info">
+                            <h4>Nighttime Coughing</h4>
+                            <p>Frequent awakening due to coughing</p>
+                        </div>
+                    </li>
+                    <li data-severity="moderate">
+                        <span class="symptom-icon">🌬️</span>
+                        <div class="symptom-info">
+                            <h4>Shortness of Breath</h4>
+                            <p>Difficulty catching breath during rest</p>
+                        </div>
+                    </li>
+                    <li data-severity="moderate">
+                        <span class="symptom-icon">🎗️</span>
+                        <div class="symptom-info">
+                            <h4>Chest Tightness</h4>
+                            <p>Feeling of pressure or constriction</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Emergency Symptoms Card -->
+            <div class="symptom-card emergency-symptoms">
+                <div class="card-header">
+                    <div class="symptom-icon">🚨</div>
+                    <h3 class="card-title">Emergency Warning Signs</h3>
+                    <div class="severity-indicator critical"></div>
+                </div>
+                <ul class="symptom-list critical-list">
+                    <li data-severity="critical">
+                        <span class="symptom-icon">💨</span>
+                        <div class="symptom-info">
+                            <h4>Rapid Breathing</h4>
+                            <p>Hunched posture, nasal flaring</p>
+                        </div>
+                        <div class="alert-badge">!</div>
+                    </li>
+                    <li data-severity="critical">
+                        <span class="symptom-icon">⚠️</span>
+                        <div class="symptom-info">
+                            <h4>Severe Wheezing</h4>
+                            <p>Audible without stethoscope</p>
+                        </div>
+                        <div class="alert-badge">!</div>
+                    </li>
+                    <li data-severity="critical">
+                        <span class="symptom-icon">🚶</span>
+                        <div class="symptom-info">
+                            <h4>Mobility Issues</h4>
+                            <p>Difficulty talking or walking</p>
+                        </div>
+                        <div class="alert-badge">!</div>
+                    </li>
+                    <li data-severity="critical">
+                        <span class="symptom-icon">💙</span>
+                        <div class="symptom-info">
+                            <h4>Cyanosis</h4>
+                            <p>Blue-tinged lips/skin/nails</p>
+                        </div>
+                        <div class="alert-badge">!</div>
+                    </li>
+                </ul>
+                <div class="emergency-footer">
+                    <div class="pulsing-alert">
+                        ⚠️ Medication ineffective after 20-30 mins? 
+                        <button class="emergency-btn">Call 911 Immediately</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Triggers Section -->
+<section class="triggers-section" id="triggers">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title"><span class="title-number">05</span>Asthma Triggers Management</h2>
+            <div class="title-line"></div>
+        </div>
+
+        <div class="triggers-grid">
+            <!-- Tobacco Smoke -->
+            <div class="trigger-card" data-trigger-type="smoke">
+                <div class="trigger-header">
+                    <div class="trigger-icon">🚭</div>
+                    <h3>Tobacco Smoke</h3>
+                    <div class="risk-level high">High Risk</div>
+                </div>
+                <ul class="trigger-measures">
+                    <li data-complete="false">
+                        <span class="measure-icon">🏠</span>
+                        No indoor smoking
+                        <button class="quitline-btn" data-number="1-800-QUIT-NOW">Get Help</button>
+                    </li>
+                    <li data-complete="false">
+                        <span class="measure-icon">🚗</span>
+                        No smoking in vehicles
+                    </li>
+                </ul>
+                <div class="progress-container">
+                    <div class="progress-bar smoke-progress"></div>
+                </div>
+            </div>
+
+            <!-- Animal Dander -->
+            <div class="trigger-card" data-trigger-type="dander">
+                <div class="trigger-header">
+                    <div class="trigger-icon">🐾</div>
+                    <h3>Animal Dander</h3>
+                    <div class="risk-level medium">Medium Risk</div>
+                </div>
+                <ul class="trigger-measures">
+                    <li data-complete="false">
+                        <span class="measure-icon">🌳</span>
+                        Outdoor pet housing
+                    </li>
+                    <li data-complete="false">
+                        <span class="measure-icon">🚫</span>
+                        Pet-free bedrooms
+                    </li>
+                    <li data-complete="false">
+                        <span class="measure-icon">🧼</span>
+                        Weekly cleaning routine
+                    </li>
+                </ul>
+                <div class="progress-container">
+                    <div class="progress-bar dander-progress"></div>
+                </div>
+            </div>
+
+            <!-- Dust Mites -->
+            <div class="trigger-card" data-trigger-type="mites">
+                <div class="trigger-header">
+                    <div class="trigger-icon">🦠</div>
+                    <h3>Dust Mites</h3>
+                    <div class="risk-level high">High Risk</div>
+                </div>
+                <ul class="trigger-measures">
+                    <li data-complete="false">
+                        <span class="measure-icon">🛏️</span>
+                        Dust-proof bedding
+                    </li>
+                    <li data-complete="false">
+                        <span class="measure-icon">🌡️</span>
+                        Weekly hot washes (130°F)
+                        <div class="temp-indicator">🔥</div>
+                    </li>
+                    <li data-complete="false">
+                        <span class="measure-icon">💧</span>
+                        Humidity <50%
+                        <div class="humidity-gauge"></div>
+                    </li>
+                    <li data-complete="false">
+                        <span class="measure-icon">🧹</span>
+                        Remove carpets
+                    </li>
+                </ul>
+                <div class="progress-container">
+                    <div class="progress-bar mites-progress"></div>
+                </div>
+            </div>
+
+            <!-- Other Triggers -->
+            <div class="trigger-card other-triggers">
+                <div class="trigger-header">
+                    <div class="trigger-icon">⚠️</div>
+                    <h3>Additional Triggers</h3>
+                </div>
+                <div class="trigger-tags">
+                    <span class="trigger-tag">Exercise</span>
+                    <span class="trigger-tag">Weather Changes</span>
+                    <span class="trigger-tag">Mold</span>
+                    <span class="trigger-tag">Pollen</span>
+                    <span class="trigger-tag">Viral Infections</span>
+                </div>
+                <div class="prevention-tips">
+                    <p>🔍 Monitor local air quality</p>
+                    <p>💊 Keep rescue inhaler accessible</p>
+                    <p>📆 Maintain symptom diary</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Ten Steps Section -->
+<section class="steps-section" id="steps-home">
+    
+
+       <!-- Ten Steps Section -->
+<section class="steps-section" id="steps-home">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title"><span class="title-number">10</span>Asthma-Friendly Home Protocol</h2>
+            <div class="title-line"></div>
+        </div>
+
+        <div class="steps-progress">
+            <div class="progress-circle">
+                <svg viewBox="0 0 100 100">
+                    <circle class="progress-background" cx="50" cy="50" r="45"/>
+                    <circle class="progress-indicator" cx="50" cy="50" r="45"/>
+                </svg>
+                <div class="progress-count">0/10</div>
+            </div>
+            <div class="progress-instruction">Complete steps to improve your home safety</div>
+        </div>
+
+       <!-- Complete 10 Steps Grid -->
+<div class="steps-grid">
+    <!-- Step 1 -->
+    <div class="step-card" data-step="1">
+        <div class="step-header">
+            <div class="step-number">01</div>
+            <div class="step-icon">🚭</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">No Indoor Smoking</h3>
+        <div class="step-content">
+            <p>Implement strict no-smoking policies indoors</p>
+            <div class="step-actions">
+                <button class="action-btn quitline-btn" data-number="1-800-QUIT-NOW">
+                    Get Cessation Support
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card" data-step="2">
+        <div class="step-header">
+            <div class="step-number">02</div>
+            <div class="step-icon">🛏️</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">Allergen-Proof Bedding</h3>
+        <div class="step-content">
+            <p>Use dust mite-proof mattress/pillow covers</p>
+            <div class="step-checklist">
+                <label class="check-item">
+                    <input type="checkbox"> Wash weekly @130°F
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card" data-step="3">
+        <div class="step-header">
+            <div class="step-number">03</div>
+            <div class="step-icon">🌫️</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">Air Quality Monitoring</h3>
+        <div class="step-content">
+            <p>Check AQI daily using air quality apps</p>
+            <div class="step-actions">
+                <button class="action-btn aqi-btn">View Local AQI</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card" data-step="4">
+        <div class="step-header">
+            <div class="step-number">04</div>
+            <div class="step-icon">🧹</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">Regular Cleaning</h3>
+        <div class="step-content">
+            <p>Dust/vacuum with HEPA filter weekly</p>
+            <div class="step-checklist">
+                <label class="check-item">
+                    <input type="checkbox"> Use damp cloths
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card" data-step="5">
+        <div class="step-header">
+            <div class="step-number">05</div>
+            <div class="step-icon">🐕</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">Pet Management</h3>
+        <div class="step-content">
+            <p>Keep pets outdoors when possible</p>
+            <div class="step-checklist">
+                <label class="check-item">
+                    <input type="checkbox"> Pet-free bedrooms
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step-card" data-step="6">
+        <div class="step-header">
+            <div class="step-number">06</div>
+            <div class="step-icon">🐀</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">Pest Prevention</h3>
+        <div class="step-content">
+            <p>Store food in airtight containers</p>
+            <div class="step-checklist">
+                <label class="check-item">
+                    <input type="checkbox"> Use non-spray traps
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step-card" data-step="7">
+        <div class="step-header">
+            <div class="step-number">07</div>
+            <div class="step-icon">🚫</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">Chemical Safety</h3>
+        <div class="step-content">
+            <p>Avoid pesticide sprays</p>
+            <div class="step-checklist">
+                <label class="check-item">
+                    <input type="checkbox"> Use baits/traps
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 8 -->
+    <div class="step-card" data-step="8">
+        <div class="step-header">
+            <div class="step-number">08</div>
+            <div class="step-icon">🍄</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">Mold Control</h3>
+        <div class="step-content">
+            <p>Clean with 10% bleach solution</p>
+            <div class="step-checklist">
+                <label class="check-item">
+                    <input type="checkbox"> Fix leaks promptly
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 9 -->
+    <div class="step-card" data-step="9">
+        <div class="step-header">
+            <div class="step-number">09</div>
+            <div class="step-icon">💨</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">Proper Ventilation</h3>
+        <div class="step-content">
+            <p>Use exhaust fans when cooking/showering</p>
+            <div class="step-checklist">
+                <label class="check-item">
+                    <input type="checkbox"> Maintain airflow
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 10 -->
+    <div class="step-card" data-step="10">
+        <div class="step-header">
+            <div class="step-number">10</div>
+            <div class="step-icon">📋</div>
+            <div class="step-status"></div>
+        </div>
+        <h3 class="step-title">Management Plan</h3>
+        <div class="step-content">
+            <p>Develop asthma action plan with doctor</p>
+            <div class="step-actions">
+                <button class="action-btn plan-btn">Download Template</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="air-quality-widget">
+            <div class="aqi-display">
+                <div class="aqi-value">--</div>
+                <div class="aqi-label">Current AQI</div>
+            </div>
+            <div class="aqi-recommendations"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Indoor Air Quality Section -->
+<section class="air-quality-section" id="clean-air">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title"><span class="title-number">08</span>Indoor Air Quality Management</h2>
+            <div class="title-line"></div>
+        </div>
+
+        <div class="room-grid">
+            <!-- Living Room -->
+            <div class="room-card" data-room="living">
+                <div class="room-header">
+                    <div class="room-icon">🛋️</div>
+                    <h3>Living Room</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="dusting">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Surface Maintenance</h4>
+                            <p>Dust blinds/furniture 2–3× weekly</p>
+                        </div>
+                    </li>
+                    <li data-action="humidity">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Air Control</h4>
+                            <p>Use HEPA air cleaners • Maintain 30–50% RH</p>
+                            <div class="humidity-display">
+                                <div class="humidity-bar"></div>
+                                <span class="humidity-value">--%</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bedroom -->
+            <div class="room-card" data-room="bedroom">
+                <div class="room-header">
+                    <div class="room-icon">🛏️</div>
+                    <h3>Bedroom</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="bedding">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Bedding Care</h4>
+                            <p>Wash weekly in 130°F water</p>
+                        </div>
+                    </li>
+                    <li data-action="fragrances">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Air Quality</h4>
+                            <p>Avoid scented air fresheners</p>
+                            <div class="scent-warning">⚠️ No Plug-ins/Sprays</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bathroom -->
+            <div class="room-card" data-room="bathroom">
+                <div class="room-header">
+                    <div class="room-icon">🚿</div>
+                    <h3>Bathroom</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="linens">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Linen Care</h4>
+                            <p>Dry wet towels immediately</p>
+                        </div>
+                    </li>
+                    <li data-action="curtains">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Curtain Maintenance</h4>
+                            <div class="cleaning-methods">
+                                <span class="method fabric">Fabric: Hot Water Wash</span>
+                                <span class="method vinyl">Vinyl: 10% Bleach</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Kitchen -->
+            <div class="room-card" data-room="kitchen">
+                <div class="room-header">
+                    <div class="room-icon">🍳</div>
+                    <h3>Kitchen</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="surfaces">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Surface Hygiene</h4>
+                            <p>Clean counters/dishes promptly</p>
+                        </div>
+                    </li>
+                    <li data-action="waste">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Waste Management</h4>
+                            <p>Empty trash daily</p>
+                            <div class="reminder">🗑️ Evening Routine</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Basement/Utility -->
+            <div class="room-card" data-room="basement">
+                <div class="room-header">
+                    <div class="room-icon">🏗️</div>
+                    <h3>Utility Areas</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="chemicals">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Chemical Storage</h4>
+                            <p>Store in garage/shed</p>
+                        </div>
+                    </li>
+                    <li data-action="venting">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Ventilation Systems</h4>
+                            <div class="vent-checklist">
+                                <span>✔️ Seal windows</span>
+                                <span>✔️ Maintain appliances</span>
+                                <span>✔️ External dryer vents</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+       
+    </div>
+</section>
+
+<!-- Indoor Air Quality Section -->
+<section class="air-quality-section" id="clean-air">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title"><span class="title-number">08</span>Keeping Indoor Air Clean</h2>
+            <div class="title-line"></div>
+            <p class="section-intro">Clean indoor air is essential for asthma control. Implement these room-specific strategies to maintain healthy air quality.</p>
+        </div>
+
+        <div class="room-grid">
+            <!-- Living Room -->
+            <div class="room-card" data-room="living">
+                <div class="room-header">
+                    <div class="room-icon">🛋️</div>
+                    <h3>Living Room</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="dusting">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Surface Maintenance</h4>
+                            <p>Dust furniture & blinds 2-3× weekly</p>
+                            <p>Vacuum upholstery & floors 2-3× weekly</p>
+                        </div>
+                    </li>
+                    <li data-action="clutter">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Space Optimization</h4>
+                            <p>Remove all clutter</p>
+                            <p>Maintain 30-50% humidity</p>
+                            <div class="humidity-display">
+                                <div class="humidity-bar"></div>
+                                <span class="humidity-value">--%</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bedroom -->
+            <div class="room-card" data-room="bedroom">
+                <div class="room-header">
+                    <div class="room-icon">🛏️</div>
+                    <h3>Bedroom</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="cleaning">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Weekly Routine</h4>
+                            <p>Dust & vacuum 2-3× weekly</p>
+                            <p>Wash bedding in 130°F water</p>
+                        </div>
+                    </li>
+                    <li data-action="air-quality">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Air Safety</h4>
+                            <p>No scented fresheners</p>
+                            <div class="scent-warning">🚫 Avoid Plug-ins/Sprays</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bathroom -->
+            <div class="room-card" data-room="bathroom">
+                <div class="room-header">
+                    <div class="room-icon">🚿</div>
+                    <h3>Bathroom</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="surfaces">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Surface Care</h4>
+                            <p>No carpet flooring</p>
+                            <p>Dry wet towels immediately</p>
+                        </div>
+                    </li>
+                    <li data-action="curtains">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Shower Maintenance</h4>
+                            <div class="cleaning-methods">
+                                <span class="method fabric">Fabric: Hot Water Wash</span>
+                                <span class="method vinyl">Vinyl: 10% Bleach</span>
+                            </div>
+                            <p>Ventilate after showering</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Kitchen -->
+            <div class="room-card" data-room="kitchen">
+                <div class="room-header">
+                    <div class="room-icon">🍳</div>
+                    <h3>Kitchen</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="hygiene">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Daily Maintenance</h4>
+                            <p>Clean counters & dishes promptly</p>
+                            <p>Empty trash daily</p>
+                        </div>
+                    </li>
+                    <li data-action="prevention">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Preventive Measures</h4>
+                            <p>Limit under-sink clutter</p>
+                            <p>Fix leaks & wipe water</p>
+                            <p>Regular mopping/vacuuming</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Basement/Utility -->
+            <div class="room-card" data-room="basement">
+                <div class="room-header">
+                    <div class="room-icon">🏗️</div>
+                    <h3>Utility Areas</h3>
+                    <div class="room-progress" data-progress="0"></div>
+                </div>
+                <ul class="room-checklist">
+                    <li data-action="storage">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>Chemical Safety</h4>
+                            <p>Store chemicals in garage/shed</p>
+                            <p>Proper disposal of hazardous materials</p>
+                        </div>
+                    </li>
+                    <li data-action="maintenance">
+                        <span class="check-icon"></span>
+                        <div class="task-info">
+                            <h4>System Maintenance</h4>
+                            <div class="vent-checklist">
+                                <span>✔️ Clean foundation walls</span>
+                                <span>✔️ Seal window frames</span>
+                                <span>✔️ Annual appliance inspection</span>
+                                <span>✔️ External dryer venting</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <div>
+
+    </div>
+
+    <!-- Video Section -->
+    <!-- Video Section -->
+<!-- Video Section -->
+<section class="video-section" id="video-series">
+    <div class="section-container">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span class="title-number">🎥</span>
+                Asthma Management Video Guide
+            </h2>
+            <div class="title-line"></div>
+            <p class="lead-text">
+                Comprehensive video series for creating asthma-safe environments
+            </p>
+        </div>
+
+        <div class="video-container">
+            <!-- Video 1 -->
+            <div class="video-card">
+                <div class="video-header">
+                    <h3 class="video-title">
+                        <i class="fas fa-lungs"></i>
+                        Part 1: Understanding Asthma Basics
+                    </h3>
+                </div>
+                <div class="video-player">
+                    <video controls poster="https://img.youtube.com/vi/n90aLNDbwso/0.jpg">
+                        <source src="https://www.youtube.com/embed/n90aLNDbwso" type="video/mp4">
+                    </video>
+                    <div class="thumbnail-overlay">
+                        <i class="fas fa-play play-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 2 -->
+            <div class="video-card">
+                <div class="video-header">
+                    <h3 class="video-title">
+                        <i class="fas fa-school"></i>
+                        Part 2: Classroom Safety Measures
+                    </h3>
+                </div>
+                <div class="video-player">
+                    <video controls poster="https://img.youtube.com/vi/fYKxLnGr9M8/0.jpg">
+                        <source src="https://www.youtube.com/embed/fYKxLnGr9M8" type="video/mp4">
+                    </video>
+                    <div class="thumbnail-overlay">
+                        <i class="fas fa-play play-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 3 -->
+            <div class="video-card">
+                <div class="video-header">
+                    <h3 class="video-title">
+                        <i class="fas fa-tree"></i>
+                        Part 3: Outdoor Environment Control
+                    </h3>
+                </div>
+                <div class="video-player">
+                    <video controls poster="https://img.youtube.com/vi/HFvSZGrBFTc/0.jpg">
+                        <source src="https://www.youtube.com/embed/HFvSZGrBFTc" type="video/mp4">
+                    </video>
+                    <div class="thumbnail-overlay">
+                        <i class="fas fa-play play-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 4 -->
+            <div class="video-card">
+                <div class="video-header">
+                    <h3 class="video-title">
+                        <i class="fas fa-broom"></i>
+                        Part 4: Safe Cleaning Practices
+                    </h3>
+                </div>
+                <div class="video-player">
+                    <video controls poster="https://img.youtube.com/vi/hwrdY7hfuTc/0.jpg">
+                        <source src="https://www.youtube.com/embed/hwrdY7hfuTc" type="video/mp4">
+                    </video>
+                    <div class="thumbnail-overlay">
+                        <i class="fas fa-play play-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 5 -->
+            <div class="video-card">
+                <div class="video-header">
+                    <h3 class="video-title">
+                        <i class="fas fa-wind"></i>
+                        Part 5: HVAC System Management
+                    </h3>
+                </div>
+                <div class="video-player">
+                    <video controls poster="https://img.youtube.com/vi/WNmbK813Ag8/0.jpg">
+                        <source src="https://www.youtube.com/embed/WNmbK813Ag8" type="video/mp4">
+                    </video>
+                    <div class="thumbnail-overlay">
+                        <i class="fas fa-play play-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 6 -->
+            <div class="video-card">
+                <div class="video-header">
+                    <h3 class="video-title">
+                        <i class="fas fa-first-aid"></i>
+                        Part 6: Emergency Protocols
+                    </h3>
+                </div>
+                <div class="video-player">
+                    <video controls poster="https://img.youtube.com/vi/cssobv7fkrA/0.jpg">
+                        <source src="https://www.youtube.com/embed/cssobv7fkrA" type="video/mp4">
+                    </video>
+                    <div class="thumbnail-overlay">
+                        <i class="fas fa-play play-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video 7 -->
+            <div class="video-card">
+                <div class="video-header">
+                    <h3 class="video-title">
+                        <i class="fas fa-check-double"></i>
+                        Part 7: Comprehensive Strategy
+                    </h3>
+                </div>
+                <div class="video-player">
+                    <video controls poster="https://img.youtube.com/vi/VeizGTU1gPs/0.jpg">
+                        <source src="https://www.youtube.com/embed/VeizGTU1gPs" type="video/mp4">
+                    </video>
+                    <div class="thumbnail-overlay">
+                        <i class="fas fa-play play-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer Section -->
+<footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-columns">
+            <!-- Environmental Analysis Section -->
+            <div class="footer-section">
+                <div class="org-info">
+                    <svg class="org-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    <div>
+                        <h3 class="org-title">Center for Environmental Analysis</h3>
+                        <p class="org-subtitle">Southeast Missouri State University</p>
+                    </div>
+                </div>
+                <address class="contact-info">
+                    <p>📍 1 University Plaza, Cape Girardeau, MO 63701</p>
+                    <p>📞 <a href="tel:5736512500">(573) 651-2500</a></p>
+                    <p>📧 <a href="mailto:cea@semo.edu">cea@semo.edu</a></p>
+                    <p>🌐 <a href="https://www.semo.edu/cea" target="_blank">semo.edu/cea</a></p>
+                </address>
+            </div>
+
+            <!-- Health Department Section -->
+            <div class="footer-section">
+                <div class="org-info">
+                    <svg class="org-icon" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 11.5h-1V15H8v-1.5H7V9h1v1.5h1V9h1v5.5zm5-1.5h-1v3h-1V9h3c.6 0 1 .4 1 1v2c0 .6-.4 1-1 1zm0-3h-1v1h1v-1z"/>
+                    </svg>
+                    <div>
+                        <h3 class="org-title">Missouri Asthma Prevention<br>and Control Program</h3>
+                        <p class="org-subtitle">Missouri Department of Health<br>and Senior Services</p>
+                    </div>
+                </div>
+                <nav class="footer-links">
+                    <a href="/resources" class="footer-link">Caregiver Resources</a>
+                    <a href="/prevention" class="footer-link">Prevention Strategies</a>
+                    <a href="/data" class="footer-link">Air Quality Data</a>
+                </nav>
+            </div>
+
+            <!-- Social & Legal -->
+            <div class="footer-section">
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook" class="social-icon">
+                        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12S0 5.446 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047v-2.66c0-3.026 1.792-4.697 4.533-4.697 1.312 0 2.686.234 2.686.234v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+                    </a>
+                    <a href="#" aria-label="Twitter" class="social-icon">
+                        <svg viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                    </a>
+                    <a href="#" aria-label="Email" class="social-icon">
+                        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    </a>
+                </div>
+                <div class="legal-info">
+                    <p class="copyright">&copy; <span id="current-year"></span> Missouri Public Health Initiative</p>
+                    <div class="legal-links">
+                        <a href="/privacy">Privacy Policy</a>
+                        <a href="/terms">Terms of Service</a>
+                        <a href="/accessibility">Accessibility</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</section>
+
+    <script>
+        // Advanced particle system
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 200;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    width: ${Math.random() * 3 + 1}px;
+                    height: ${Math.random() * 3 + 1}px;
+                    animation-delay: ${Math.random() * -20}s;
+                    opacity: ${Math.random() * 0.5 + 0.2};
+                `;
+                container.appendChild(particle);
+            }
+        }
+
+        // Parallax effect
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            document.querySelector('.header-content').style.transform = 
+                `translate(${x}px, ${y}px)`;
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            
+            // Dynamic background adjustment
+            const updateBackground = () => {
+                const teal = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--teal').trim();
+                document.querySelector('.lung-animation').style.background = 
+                    `radial-gradient(circle at center, ${teal} 0%, transparent 70%)`;
+            };
+            updateBackground();
+        });
+        // Smooth scroll functionality
+    function smoothScroll(target) {
+        const element = document.querySelector(target);
+        element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+
+    // Animate items on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    document.querySelectorAll('.toc-item').forEach((item) => {
+        item.style.opacity = 0;
+        item.style.transform = 'translateY(20px)';
+        item.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        observer.observe(item);
+    });
+
+    // Dynamic background colors
+    document.querySelectorAll('.toc-item').forEach(item => {
+        item.addEventListener('mouseover', function() {
+            const colors = [var(--teal), var(--mint), var(--gold)];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            this.style.backgroundColor = `${randomColor}15`;
+        });
+        
+        item.addEventListener('mouseout', function() {
+            this.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+        });
+    });
+
+    // Controlling Asthma Interactions
+function initAsthmaSection() {
+    // Animated border effect for priority box
+    const priorityBox = document.querySelector('.priority-box');
+    if (priorityBox) {
+        let rotation = 0;
+        priorityBox.addEventListener('mousemove', (e) => {
+            const rect = priorityBox.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            rotation = Math.atan2(y - rect.height/2, x - rect.width/2) * (180/Math.PI);
+            priorityBox.style.setProperty('--rotation', `${rotation}deg`);
+        });
+    }
+
+    // Dynamic step highlighting
+    const steps = document.querySelectorAll('.priority-steps li');
+    steps.forEach(step => {
+        step.addEventListener('mouseenter', () => {
+            const stepNumber = step.dataset.step;
+            document.documentElement.style.setProperty('--active-step', stepNumber);
+        });
+        
+        step.addEventListener('mouseleave', () => {
+            document.documentElement.style.removeProperty('--active-step');
+        });
+    });
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px'
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Trigger pulsing animation
+                document.querySelector('.pulsing-circle').style.animationPlayState = 'running';
+                
+                // Animate step numbers
+                gsap.to('.priority-steps li::before', {
+                    rotation: 360,
+                    duration: 0.8,
+                    stagger: 0.2,
+                    ease: 'power2.out'
+                });
+            }
+        });
+    }, observerOptions);
+
+    sectionObserver.observe(document.querySelector('#controlling-asthma'));
+
+    // Dynamic image parallax
+    const infographic = document.querySelector('.infographic-container');
+    if (infographic) {
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const rotation = scrollY * 0.1;
+            const translateY = scrollY * 0.2;
+            
+            gsap.to(infographic, {
+                y: -translateY,
+                rotation: rotation,
+                ease: 'power1.out',
+                duration: 0.8
+            });
+        });
+    }
+}
+
+// Initialize when document loads
+document.addEventListener('DOMContentLoaded', () => {
+    initAsthmaSection();
+    
+    // Add custom properties
+    document.documentElement.style.setProperty('--rotation', '0deg');
+    document.documentElement.style.setProperty('--active-step', '0');
+});
+
+// Smooth scroll compatibility
+document.querySelectorAll('.priority-steps li').forEach(item => {
+    item.addEventListener('click', function() {
+        const targetId = this.dataset.target;
+        if (targetId) {
+            smoothScroll(targetId);
+        }
+    });
+});
+
+// Symptoms Section Interactions
+function initSymptomsSection() {
+    // Critical symptom hover effect
+    document.querySelectorAll('[data-severity="critical"]').forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            item.style.transform = 'scale(1.02)';
+            item.style.boxShadow = '0 5px 15px rgba(220, 38, 38, 0.2)';
+        });
+        
+        item.addEventListener('mouseleave', () => {
+            item.style.transform = 'scale(1)';
+            item.style.boxShadow = 'none';
+        });
+    });
+
+    // Emergency button interaction
+    const emergencyBtn = document.querySelector('.emergency-btn');
+    if (emergencyBtn) {
+        emergencyBtn.addEventListener('click', () => {
+            window.location.href = 'tel:911';
+            gsap.to(emergencyBtn, {
+                scale: 0.9,
+                repeat: 1,
+                yoyo: true,
+                duration: 0.3
+            });
+        });
+    }
+
+    // Scroll animations
+    gsap.utils.toArray('.symptom-card').forEach(card => {
+        gsap.from(card, {
+            scrollTrigger: {
+                trigger: card,
+                start: 'top center+=100',
+                toggleActions: 'play none none reverse'
+            },
+            opacity: 0,
+            y: 50,
+            duration: 0.8,
+            ease: 'power2.out'
+        });
+    });
+
+    // Severity color coding
+    document.querySelectorAll('.symptom-list li').forEach(item => {
+        const severity = item.dataset.severity;
+        const color = severity === 'critical' ? '#dc2626' : 
+                     severity === 'moderate' ? var(--gold) : var(--teal);
+        
+        item.style.setProperty('--severity-color', color);
+        item.querySelector('.symptom-icon').style.color = color;
+    });
+}
+
+// Initialize when document loads
+document.addEventListener('DOMContentLoaded', initSymptomsSection);
+
+// Triggers Section Interactions
+function initTriggersSection() {
+    // Progress bars animation
+    const progressBars = document.querySelectorAll('.progress-bar');
+    progressBars.forEach(bar => {
+        const measures = bar.closest('.trigger-card').querySelectorAll('.trigger-measures li');
+        const completed = bar.closest('.trigger-card').querySelectorAll('[data-complete="true"]').length;
+        bar.style.width = `${(completed / measures.length) * 100}%`;
+    });
+
+    // Quitline button interaction
+    document.querySelectorAll('.quitline-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const number = btn.dataset.number;
+            window.location.href = `tel:${number}`;
+        });
+    });
+
+    // Measure completion toggle
+    document.querySelectorAll('.trigger-measures li').forEach(measure => {
+        measure.addEventListener('click', () => {
+            const isComplete = measure.dataset.complete === 'true';
+            measure.dataset.complete = !isComplete;
+            measure.querySelector('.measure-icon').textContent = isComplete ? '◻️' : '✅';
+            initTriggersSection(); // Update progress bars
+        });
+    });
+
+    // Humidity gauge animation
+    gsap.to('.humidity-gauge::after', {
+        width: '50%',
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: 'power1.inOut'
+    });
+
+    // Scroll animations
+    gsap.utils.toArray('.trigger-card').forEach(card => {
+        gsap.from(card, {
+            scrollTrigger: {
+                trigger: card,
+                start: 'top center+=100',
+                toggleActions: 'play none none reverse'
+            },
+            opacity: 0,
+            x: -50,
+            duration: 0.8,
+            ease: 'power2.out'
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initTriggersSection);
+
+// Ten Steps Interactions
+function initStepsSection() {
+    // Progress calculation
+    const updateProgress = () => {
+        const completed = document.querySelectorAll('.step-card.completed').length;
+        const progress = (completed / 10) * 283;
+        document.querySelector('.progress-indicator').style.strokeDashoffset = 283 - progress;
+        document.querySelector('.progress-count').textContent = `${completed}/10`;
+    };
+
+    // Step completion toggle
+    document.querySelectorAll('.step-card').forEach(step => {
+        step.addEventListener('click', () => {
+            step.classList.toggle('completed');
+            updateProgress();
+            
+            // Animate checkmark
+            if(step.classList.contains('completed')) {
+                gsap.fromTo(step.querySelector('.step-status'),
+                    { scale: 0 },
+                    { scale: 1, duration: 0.3, ease: 'back.out' }
+                );
+            }
+        });
+    });
+
+    // Air Quality Simulation
+    const aqiValue = document.querySelector('.aqi-value');
+    const updateAQI = () => {
+        const fakeAQI = Math.floor(Math.random() * 150) + 30;
+        aqiValue.textContent = fakeAQI;
+        aqiValue.parentElement.style.background = 
+            fakeAQI > 100 ? '#dc2626' : fakeAQI > 50 ? var(--gold) : var(--teal);
+    };
+    setInterval(updateAQI, 10000);
+    updateAQI();
+
+    // Checklist interactions
+    document.querySelectorAll('.check-item input').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            checkbox.parentElement.classList.toggle('checked', checkbox.checked);
+        });
+    });
+
+    // Scroll animations
+    gsap.utils.toArray('.step-card').forEach((card, i) => {
+        gsap.from(card, {
+            scrollTrigger: {
+                trigger: card,
+                start: 'top center+=100',
+                toggleActions: 'play none none reverse'
+            },
+            opacity: 0,
+            x: i % 2 === 0 ? -50 : 50,
+            duration: 0.6,
+            delay: i * 0.1,
+            ease: 'power2.out'
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initStepsSection);
+
+// Indoor Air Quality Interactions
+function initAirQuality() {
+    // Progress tracking
+    const updateProgress = (card) => {
+        const total = card.querySelectorAll('.check-icon').length;
+        const completed = card.querySelectorAll('.check-icon.checked').length;
+        const progress = (completed / total) * 360;
+        card.querySelector('.room-progress').style.background = 
+            `conic-gradient(var(--teal) ${progress}deg, #e2e8f0 ${progress}deg)`;
+    };
+
+    // Checklist functionality
+    document.querySelectorAll('.room-checklist li').forEach(item => {
+        item.addEventListener('click', function() {
+            const icon = this.querySelector('.check-icon');
+            icon.classList.toggle('checked');
+            icon.textContent = icon.classList.contains('checked') ? '✓' : '';
+            updateProgress(this.closest('.room-card'));
+        });
+    });
+
+    // Humidity simulation
+    setInterval(() => {
+        document.querySelectorAll('.humidity-bar').forEach(bar => {
+            const humidity = Math.floor(Math.random() * 20) + 40;
+            bar.style.width = `${(humidity / 50) * 100}%`;
+            bar.nextElementSibling.textContent = `${humidity}%`;
+        });
+    }, 5000);
+
+    // Print functionality
+    document.querySelector('.print-plan-btn').addEventListener('click', () => {
+        const planContent = Array.from(document.querySelectorAll('.room-card')).map(room => {
+            return `${room.querySelector('h3').textContent}\n${
+                Array.from(room.querySelectorAll('.checked')).map(task => 
+                    `✓ ${task.closest('li').querySelector('p').textContent}`
+                ).join('\n')
+            }`;
+        }).join('\n\n');
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`<pre>${planContent}</pre>`);
+        printWindow.print();
+    });
+
+    // Initial animations
+    gsap.from('.room-card', {
+        opacity: 0,
+        y: 50,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+            trigger: '.air-quality-section',
+            start: 'top center'
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initAirQuality);
+
+// Indoor Air Quality Interactions
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize progress tracking
+  const updateRoomProgress = (roomCard) => {
+    const totalTasks = roomCard.querySelectorAll('.check-icon').length;
+    const completedTasks = roomCard.querySelectorAll('.check-icon.checked').length;
+    const progress = (completedTasks / totalTasks) * 360;
+    roomCard.querySelector('.room-progress').style.background = 
+      `conic-gradient(var(--teal) ${progress}deg, #e2e8f0 ${progress}deg)`;
+  };
+
+  // Task completion toggle
+  document.querySelectorAll('.room-checklist li').forEach(task => {
+    task.addEventListener('click', function() {
+      const checkIcon = this.querySelector('.check-icon');
+      checkIcon.classList.toggle('checked');
+      updateRoomProgress(this.closest('.room-card'));
+    });
+  });
+
+  // Simulate humidity data
+  setInterval(() => {
+    document.querySelectorAll('.humidity-bar').forEach(bar => {
+      const humidity = Math.floor(Math.random() * 20) + 40;
+      bar.style.width = `${humidity}%`;
+      bar.nextElementSibling.textContent = `${humidity}%`;
+    });
+  }, 5000);
+
+  // Print functionality
+  document.querySelector('.print-plan-btn').addEventListener('click', () => {
+    const planContent = Array.from(document.querySelectorAll('.room-card')).map(room => {
+      const roomName = room.querySelector('h3').textContent;
+      const tasks = Array.from(room.querySelectorAll('.checked')).map(task => {
+        return `✓ ${task.closest('li').querySelector('p').textContent}`;
+      }).join('\n');
+      return `${roomName}\n${tasks}`;
+    }).join('\n\n');
+
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`<pre style="padding: 2rem; font-family: sans-serif;">${planContent}</pre>`);
+    printWindow.document.close();
+    printWindow.print();
+  });
+
+  // Scroll animations
+  gsap.from('.room-card', {
+    opacity: 0,
+    y: 50,
+    stagger: 0.1,
+    duration: 0.8,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.air-quality-section',
+      start: 'top center-=100',
+      toggleActions: 'play none none none'
+    }
+  });
+
+  // Initial humidity display
+  document.querySelectorAll('.humidity-bar').forEach(bar => {
+    const initialHumidity = Math.floor(Math.random() * 20) + 40;
+    bar.style.width = `${initialHumidity}%`;
+    bar.nextElementSibling.textContent = `${initialHumidity}%`;
+  });
+});
+
+function smoothScroll(target) {
+        const element = document.querySelector(target);
+        if (!element) return;
+        
+        const offset = 120; // Adjust based on your header height
+        const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
+        
+        window.scrollTo({
+            top: elementTop - offset,
+            behavior: 'smooth'
+        });
+    }
+
+    function smoothScroll(e) {
+    // Handle both anchor clicks and direct calls
+    const targetId = e?.target?.closest?.('a')?.getAttribute('href') || e;
+    const target = document.querySelector(targetId);
+    
+    if (!target) return;
+    
+    const headerHeight = document.querySelector('.toc-container').offsetHeight;
+    const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+    
+    window.scrollTo({
+        top: elementPosition - headerHeight - 20,
+        behavior: 'smooth'
+    });
+    
+    if (e?.preventDefault) e.preventDefault();
+}
+
+document.querySelectorAll('.thumbnail-overlay').forEach(overlay => {
+            const video = overlay.parentElement.querySelector('video');
+            const playIcon = overlay.querySelector('.play-icon');
+            
+            // Click to play/pause
+            overlay.addEventListener('click', () => {
+                if(video.paused) {
+                    video.play();
+                    overlay.style.opacity = '0';
+                    playIcon.classList.replace('fa-play', 'fa-pause');
+                } else {
+                    video.pause();
+                    overlay.style.opacity = '1';
+                    playIcon.classList.replace('fa-pause', 'fa-play');
+                }
+            });
+
+            // Show overlay when paused
+            video.addEventListener('pause', () => {
+                overlay.style.opacity = '1';
+                playIcon.classList.replace('fa-pause', 'fa-play');
+            });
+
+            // Hide overlay when playing
+            video.addEventListener('play', () => {
+                overlay.style.opacity = '0';
+                playIcon.classList.replace('fa-play', 'fa-pause');
+            });
+        });
+            const video = wrapper.querySelector('video');
+            const poster = wrapper.querySelector('.video-poster');
+            const playIcon = wrapper.querySelector('.play-icon');
+
+            wrapper.addEventListener('click', () => {
+                if(video.paused) {
+                    video.play();
+                    wrapper.classList.add('playing');
+                    playIcon.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    video.pause();
+                    wrapper.classList.remove('playing');
+                    playIcon.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            });
+
+            video.addEventListener('ended', () => {
+                wrapper.classList.remove('playing');
+                playIcon.innerHTML = '<i class="fas fa-play"></i>';
+            });
+        
+    </script>
+</body>
+</html>
